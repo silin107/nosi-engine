@@ -1,0 +1,32 @@
+flowchart TD
+    U[👤 المستخدم<br/>يكتب طلبه بالعربية] --> UI[واجهة الشات<br/>Base44 Frontend]
+
+    UI --> ORCH[🧠 طبقة التنسيق - Orchestrator<br/>Node.js / Python Service]
+
+    ORCH --> INT[محلل النية Intent Parser<br/>يحدد: صفحة جديدة؟ تعديل؟ حذف قسم؟]
+
+    INT --> CTX[مدير السياق Context Manager<br/>يحفظ: هيكل الموقع الحالي + الملفات + المحادثة]
+
+    CTX --> LLM[🤖 نموذج الذكاء الاصطناعي<br/>Claude API]
+
+    LLM --> GEN[مولّد الكود Code Generator<br/>ينتج: HTML/React + CSS + مكونات]
+
+    GEN --> VALID[✅ طبقة التحقق Validator<br/>- فحص الأخطاء البرمجية<br/>- فحص الأمان<br/>- فحص التوافق]
+
+    VALID -->|فشل| LLM
+    VALID -->|نجح| SANDBOX[🏗️ بيئة البناء المعزولة<br/>Sandbox / Container<br/>WebContainers أو Docker]
+
+    SANDBOX --> PREVIEW[👁️ معاينة حية Live Preview<br/>iframe فوري للمستخدم]
+
+    PREVIEW --> STORE[(💾 قاعدة البيانات<br/>ملفات المشروع + النسخ + الإصدارات)]
+
+    STORE --> DEPLOY[🚀 محرك النشر Deployment<br/>Vercel / Netlify / حاويات مخصصة]
+
+    DEPLOY --> LIVE[🌐 الموقع النهائي<br/>Domain مخصص للمستخدم]
+
+    PREVIEW -.->|تعديل إضافي| UI
+
+    style ORCH fill:#4f46e5,color:#fff
+    style LLM fill:#059669,color:#fff
+    style SANDBOX fill:#dc2626,color:#fff
+    style VALID fill:#d97706,color:#fff
