@@ -9,8 +9,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { handleUserMessage } = require("./lib/orchestrator");
-const { getProject } = require("./lib/contextManager");
+const { handleUserMessage } = require("./orchestrator");
+const { getProject } = require("./contextManager");
 
 const app = express();
 app.use(cors());
