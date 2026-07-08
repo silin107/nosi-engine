@@ -1,12 +1,7 @@
 /**
- * siteTreeSchema.js
+ * siteTreeSchema.js - تحسينات
  * -------------------------------------------------------
- * هذا هو "العقل" الذي يمثّل حالة الموقع بشكل منظم (وليس نص محادثة).
- * كل موقع = مجموعة صفحات، كل صفحة = مجموعة أقسام (sections)،
- * كل قسم = مكوّن React له خصائص (props) وكود.
- *
- * الفكرة: بدل أن يولّد الذكاء الاصطناعي "موقع كامل" كل مرة،
- * هو يعدّل عقدة واحدة فقط في هذه الشجرة.
+ * تحسين نموذج البيانات وإضافة مزيد من الفحوصات
  */
 
 function createEmptySiteTree(projectName) {
@@ -17,7 +12,9 @@ function createEmptySiteTree(projectName) {
     updatedAt: new Date().toISOString(),
     theme: {
       primaryColor: "#4f46e5",
+      secondaryColor: "#ec4899",
       font: "Inter",
+      fontFamily: "font-sans",
     },
     pages: [
       {
@@ -37,12 +34,52 @@ function createEmptySiteTree(projectName) {
 function isValidSiteTreeShape(tree) {
   if (!tree || typeof tree !== "object") return false;
   if (!Array.isArray(tree.pages)) return false;
-  return tree.pages.every(
-    (p) =>
-      typeof p.id === "string" &&
-      typeof p.path === "string" &&
-      Array.isArray(p.sections)
-  );
+  if (!tree.theme || typeof tree.theme !== "object") return false;
+
+  const isValidPage = (p) =>
+    typeof p.id === "string" &&
+    typeof p.path === "string" &&
+    Array.isArray(p.sections) &&
+    p.sections.every(
+      (s) =>
+        typeof s.id === "string" &&
+        typeof s.type === "string" &&
+        (typeof s.code === "string" || !s.code) && // الكود اختياري
+        (!s.props || typeof s.props === "object")
+    );
+
+  return tree.pages.every(isValidPage);
 }
 
-module.exports = { createEmptySiteTree, isValidSiteTreeShape };
+/**
+ * إصلاح الشجرة إذا كانت بها مشاكل
+ */
+function sanitizeSiteTree(tree) {
+  if (!tree) return createEmptySiteTree("default");
+
+  // التأكد من وجود الحقول الأساسية
+  tree.version = tree.version || 1;
+  tree.createdAt = tree.createdAt || new Date().toISOString();
+  tree.updatedAt = new Date().toISOString();
+
+  if (!tree.theme) {
+    tree.theme = createEmptySiteTree("temp").theme;
+  }
+
+  if (!Array.isArray(tree.pages)) {
+    tree.pages = [{
+      id: "home",
+      path: "/",
+      title: "الرئيسية",
+      sections: [],
+    }];
+  }
+
+  return tree;
+}
+
+module.exports = {
+  createEmptySiteTree,
+  isValidSiteTreeShape,
+  sanitizeSiteTree,
+};
