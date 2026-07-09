@@ -2,7 +2,7 @@
  * orchestrator.js
  * -------------------------------------------------------
  * هذا هو "المحرك" الفعلي المفقود في النسخة الحالية من NOSI.
- * يستقبل رسالة المستخدم -> يبني البرومبت -> يستدعي Claude
+ * يستقبل رسالة المستخدم -> يبني البرومبت -> يستدعي Gemini
  * -> يتحقق من الرد -> يحاول التصحيح تلقائيًا إن فشل -> يحدّث الشجرة.
  */
 
@@ -12,32 +12,49 @@ const { validateAiResponse } = require("./validator");
 const { isValidSiteTreeShape } = require("./siteTreeSchema");
 
 const MAX_RETRIES = 2;
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
+const GEMINI_MODEL = "gemini-2.5-flash";
 
-async function callClaude(systemPrompt, userPrompt) {
-  const response = await fetch(ANTHROPIC_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 4000,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
-    }),
-  });
+// Gemini SDK
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Claude API error (${response.status}): ${errText}`);
+// instantiate client once; requires GEMINI_API_KEY in env
+const geminiClient = new GoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
+
+async function callGemini(systemPrompt, userPrompt) {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY environment variable is not set");
   }
 
-  const data = await response.json();
-  const textBlock = data.content.find((b) => b.type === "text");
-  return textBlock ? textBlock.text : "";
+  // combine the prompts similarly to prior usage
+  const combinedPrompt = `${systemPrompt}\n\n${userPrompt}`;
+
+  // get the model and generate content
+  const model = geminiClient.getGenerativeModel({ model: GEMINI_MODEL });
+  const result = await model.generateContent({
+    text: combinedPrompt,
+    // keep tokens conservative; adjust as needed in production
+    max_output_tokens: 4000,
+    temperature: 0.0,
+  });
+
+  // normalize several possible response shapes from SDK
+  const response = result?.response;
+  if (!response) throw new Error("No response from Gemini model");
+
+  // response.text() is commonly available; fall back to other fields if needed
+  if (typeof response.text === "function") {
+    return response.text();
+  }
+  if (typeof response.output_text === "string") {
+    return response.output_text;
+  }
+  // If the SDK returned structured output, try to join text pieces
+  if (Array.isArray(response.output)) {
+    return response.output.map((o) => o.content || o.text || "").join("\n").trim();
+  }
+
+  // Last resort: stringify the response object
+  return JSON.stringify(response);
 }
 
 function safeParseJson(text) {
@@ -103,7 +120,7 @@ async function handleUserMessage(projectId, userMessage) {
       recentConversation: project.conversation.slice(-6),
     });
 
-    const rawText = await callClaude(systemPrompt, userPrompt);
+    const rawText = await callGemini(systemPrompt, userPrompt);
     const parsed = safeParseJson(rawText);
 
     if (!parsed) {
