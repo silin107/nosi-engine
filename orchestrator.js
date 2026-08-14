@@ -104,8 +104,11 @@ function applyActionToTree(siteTree, parsed) {
  * نقطة الدخول الرئيسية: يُستدعى من server.js لكل رسالة من المستخدم
  */
 async function handleUserMessage(projectId, userMessage) {
-  const project = getProject(projectId);
-  appendMessage(projectId, "user", userMessage);
+  // getProject is async — await it to obtain the actual project object
+  const project = await getProject(projectId);
+
+  // Ensure the user's message is appended before proceeding (avoid races)
+  await appendMessage(projectId, "user", userMessage);
 
   const systemPrompt = buildSystemPrompt();
   let lastErrors = [];
@@ -142,8 +145,9 @@ async function handleUserMessage(projectId, userMessage) {
     }
 
     project.siteTree = updatedTree;
-    saveProject(projectId, project);
-    appendMessage(projectId, "assistant", parsed.explanation || "تم التعديل");
+    // await saving and appending to avoid unhandled promise rejections / races
+    await saveProject(projectId, project);
+    await appendMessage(projectId, "assistant", parsed.explanation || "تم التعديل");
 
     return {
       success: true,
