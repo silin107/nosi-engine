@@ -12,9 +12,9 @@
     "@google/genai": "^2.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.28.2",
     "express": "^4.19.2",
-    "node-fetch": "^3.4.1"
+    "node-fetch": "^3.3.2"
   },
   "engines": {
     "node": "20.x"
