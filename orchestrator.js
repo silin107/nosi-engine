@@ -1,25 +1,22 @@
-/**
- * orchestrator.js
- * -------------------------------------------------------
- * هذا هو "المحرك" الفعلي المفقود في النسخة الحالية من NOSI.
- * يستقبل رسالة المستخدم -> يبني البرومبت -> يستدعي Gemini
- * -> يتحقق من الرد -> يحاول التصحيح تلقائيًا إن فشل -> يحدّث الشجرة.
- */
+// في أعلى ملف orchestrator.js
+import { generateWithOpenRouter } from './openrouterService.js';
 
-const { getProject, saveProject, appendMessage } = require("./contextManager");
-const { buildSystemPrompt, buildUserPrompt } = require("./promptBuilder");
-const { validateAiResponse } = require("./validator");
-const { isValidSiteTreeShape } = require("./siteTreeSchema");
+// داخل دالة التوجيه الموجودة في orchestrator.js أضف أو عدّل النماذج:
+export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
+  switch (taskType) {
+    case 'CODE_GENERATION':
+      // استدعاء Claude 3.5 Sonnet عبر OpenRouter
+      return await generateWithOpenRouter('anthropic/claude-3.5-sonnet', prompt, systemInstruction);
 
-const MAX_RETRIES = 2;
-const GEMINI_MODEL = "gemini-2.5-flash";
+    case 'DEBUG_AND_FIX':
+      // استدعاء GPT-4o عبر OpenRouter
+      return await generateWithOpenRouter('openai/gpt-4o', prompt, systemInstruction);
 
-// Gemini SDK
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-// instantiate client once; requires GEMINI_API_KEY in env
-const geminiClient = new GoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
-
+    default:
+      // استخدام Gemini كما هو معتمد في كودك الحالي
+      break;
+  }
+};
 async function callGemini(systemPrompt, userPrompt) {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY environment variable is not set");
