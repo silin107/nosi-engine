@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+const { OpenAI } = require('openai');
 
 const openrouter = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -9,7 +9,7 @@ const openrouter = new OpenAI({
   },
 });
 
-export const generateWithOpenRouter = async (modelName, prompt, systemInstruction = "") => {
+const generateWithOpenRouter = async (modelName, prompt, systemInstruction = "") => {
   try {
     const response = await openrouter.chat.completions.create({
       model: modelName,
@@ -26,3 +26,5 @@ export const generateWithOpenRouter = async (modelName, prompt, systemInstructio
     throw error;
   }
 };
+
+module.exports = { generateWithOpenRouter };
