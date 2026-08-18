@@ -15,9 +15,8 @@ export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
       return await generateWithOpenRouter('google/gemini-2.5-flash', prompt, systemInstruction);
   }
 };
-// في أعلى ملف orchestrator.js
-import { generateWithOpenRouter } from './openrouterService.js';
 
+export const handleUserMessage = async (projectId, userMessage) => {
 // داخل دالة التوجيه الموجودة في orchestrator.js أضف أو عدّل النماذج:
 export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
   switch (taskType) {
