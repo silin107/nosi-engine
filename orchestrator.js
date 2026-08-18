@@ -175,5 +175,3 @@ async function handleUserMessage(projectId, userMessage) {
     details: lastErrors,
   };
 }
-
-module.exports = { handleUserMessage, handleAIRequest };
