@@ -2,6 +2,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generateWithOpenRouter } from './openrouterService.js';
 
 const geminiClient = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const GEMINI_MODEL = "gemini-1.5-pro"; // تمت الإضافة لتجنب خطأ غير معرّف
+const MAX_RETRIES = 3; // تمت الإضافة لتجنب خطأ غير معرّف
 
 export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
   switch (taskType) {
@@ -16,30 +18,13 @@ export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
   }
 };
 
-export const handleUserMessage = async (projectId, userMessage) => {
-// داخل دالة التوجيه الموجودة في orchestrator.js أضف أو عدّل النماذج:
-export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
-  switch (taskType) {
-    case 'CODE_GENERATION':
-      // استدعاء Claude 3.5 Sonnet عبر OpenRouter
-      return await generateWithOpenRouter('anthropic/claude-3.5-sonnet', prompt, systemInstruction);
-
-    case 'DEBUG_AND_FIX':
-      // استدعاء GPT-4o عبر OpenRouter
-      return await generateWithOpenRouter('openai/gpt-4o', prompt, systemInstruction);
-
-    default:
-      // استخدام Gemini كما هو معتمد في كودك الحالي
-      break;
-  }
-};
 async function callGemini(systemPrompt, userPrompt) {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY environment variable is not set");
   }
 
   // combine the prompts similarly to prior usage
-  const combinedPrompt = `${systemPrompt}\n\n${userPrompt}`;
+  const combinedPrompt = ${systemPrompt}\n\n${userPrompt};
 
   // get the model and generate content
   const model = geminiClient.getGenerativeModel({ model: GEMINI_MODEL });
@@ -63,7 +48,7 @@ async function callGemini(systemPrompt, userPrompt) {
   }
   // If the SDK returned structured output, try to join text pieces
   if (Array.isArray(response.output)) {
-    return response.output.map((o) => o.content || o.text || "").join("\n").trim();
+    return response.output.map((o) => o.content  o.text  "").join("\n").trim();
   }
 
   // Last resort: stringify the response object
@@ -71,7 +56,7 @@ async function callGemini(systemPrompt, userPrompt) {
 }
 
 function safeParseJson(text) {
-  const cleaned = text.replace(/```json|```/g, "").trim();
+  const cleaned = text.replace(/json|``/g, "").trim();
   try {
     return JSON.parse(cleaned);
   } catch {
@@ -104,7 +89,7 @@ function applyActionToTree(siteTree, parsed) {
     case "add_page":
       siteTree.pages.push({
         id: parsed.section.id,
-        path: parsed.section.props?.path || `/${parsed.section.id}`,
+        path: parsed.section.props?.path || /${parsed.section.id},
         title: parsed.section.props?.title || parsed.section.id,
         sections: [],
       });
@@ -116,7 +101,7 @@ function applyActionToTree(siteTree, parsed) {
 /**
  * نقطة الدخول الرئيسية: يُستدعى من server.js لكل رسالة من المستخدم
  */
-async function handleUserMessage(projectId, userMessage) {
+export async function handleUserMessage(projectId, userMessage) {
   // getProject is async — await it to obtain the actual project object
   const project = await getProject(projectId);
 
@@ -125,13 +110,12 @@ async function handleUserMessage(projectId, userMessage) {
 
   const systemPrompt = buildSystemPrompt();
   let lastErrors = [];
-
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     const userPrompt = buildUserPrompt({
       userMessage:
         attempt === 0
           ? userMessage
-          : `${userMessage}\n\n(تصحيح مطلوب، الأخطاء السابقة: ${lastErrors.join("; ")})`,
+          : ${userMessage}\n\n(تصحيح مطلوب، الأخطاء السابقة: ${lastErrors.join("; ")}),
       siteTree: project.siteTree,
       recentConversation: project.conversation.slice(-6),
     });
