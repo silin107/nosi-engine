@@ -1,10 +1,9 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { generateWithOpenRouter } = require("./openrouterService.js");
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import { generateWithOpenRouter } from './openrouterService.js';
 
-// تشغيل عميل Gemini الأساسي للمشروع
-const geminiClient = new GoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
+const geminiClient = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const handleAIRequest = async (taskType, prompt, systemInstruction) => {
+export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
   switch (taskType) {
     case 'CODE_GENERATION':
       return await generateWithOpenRouter('anthropic/claude-3.5-sonnet', prompt, systemInstruction);
@@ -13,8 +12,7 @@ const handleAIRequest = async (taskType, prompt, systemInstruction) => {
       return await generateWithOpenRouter('openai/gpt-4o', prompt, systemInstruction);
 
     default:
-      // عند اختيار افتراضي يرجع لنظام Gemini الحالي لديك
-      break;
+      return await generateWithOpenRouter('google/gemini-2.5-flash', prompt, systemInstruction);
   }
 };
 // في أعلى ملف orchestrator.js
