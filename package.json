@@ -2,21 +2,25 @@
   "name": "nosi-engine",
   "version": "0.1.0",
   "description": "المحرك الفعلي المفقود في NOSI: Orchestrator + Context Manager + Validator",
-  "main": "server.js",
+  "main": "srs/index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
     "smoke": "node test/smoke.js"
   },
   "dependencies": {
-    "@google/genai": "^2.9.0",
+    "@google/genai": "^2.17.1",
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "esbuild": "^0.28.2",
-    "express": "^4.19.2",
-    "node-fetch": "^3.3.2"
+    "express": "^4.22.2",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.49.0",
+    "zod": "^4.4.3"
   },
   "engines": {
     "node": "20.x"
-  }
+  },
+  "type": "module"
 }

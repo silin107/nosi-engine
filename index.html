@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Rivera | Senior Full-Stack Engineer & Cloud Architect</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Alpine.js for interactive components -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.05); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 8s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-slate-950 overflow-x-hidden" x-data="{ mobileMenuOpen: false, activeTab: 'all', formSubmitted: false }">
+
+    <!-- Background Decorative Elements -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full filter blur-[100px] animate-pulse-slow pointer-events-none"></div>
+    <div class="absolute top-[80vh] right-1/4 w-[30rem] h-[30rem] bg-indigo-500/10 rounded-full filter blur-[120px] animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-[10vh] left-10 w-80 h-80 bg-emerald-500/5 rounded-full filter blur-[80px] pointer-events-none"></div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-2 text-xl font-bold tracking-tight">
+                    <span class="text-brand-400 font-mono">&lt;</span>
+                    <span>AlexRivera</span>
+                    <span class="text-brand-400 font-mono">/&gt;</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-400">
+                    <a href="#about" class="hover:text-brand-400 transition-colors">About</a>
+                    <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
+                    <a href="#projects" class="hover:text-brand-400 transition-colors">Projects</a>
+                    <a href="#experience" class="hover:text-brand-400 transition-colors">Experience</a>
+                    <a href="#contact" class="hover:text-brand-400 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Desktop Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#contact" class="px-4 py-2 text-sm font-semibold text-slate-950 bg-brand-400 hover:bg-brand-300 rounded-lg transition-all duration-200 shadow-lg shadow-brand-500/10 hover:shadow-brand-500/20">
+                        Hire Me
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition-colors">
+                    <i data-lucide="menu" x-show="!mobileMenuOpen" class="h-6 w-6"></i>
+                    <i data-lucide="x" x-show="mobileMenuOpen" class="h-6 w-6" style="display: none;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-150"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-100"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="md:hidden border-b border-slate-900 bg-slate-950 px-4 pt-2 pb-4 space-y-1 shadow-xl"
+             style="display: none;">
+            <a href="#about" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-900">About</a>
+            <a href="#skills" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-900">Skills</a>
+            <a href="#projects" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-900">Projects</a>
+            <a href="#experience" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-900">Experience</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-900">Contact</a>
+            <div class="pt-4 border-t border-slate-900">
+                <a href="#contact" @click="mobileMenuOpen = false" class="block w-full text-center px-4 py-2.5 text-sm font-semibold text-slate-950 bg-brand-400 hover:bg-brand-300 rounded-lg">
+                    Hire Me
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-10 pb-20 md:py-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Hero Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/50 text-xs sm:text-sm text-brand-400">
+                        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Available for freelance & full-time roles</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+                        Architecting <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-indigo-400 to-purple-400">High-Performance</span> Web Systems
+                    </h1>
+                    
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0">
+                        I'm Alex, a Senior Full-Stack Engineer specializing in scalable backend architectures, cloud-native deployments, and polished frontend user experiences.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#projects" class="w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-slate-950 bg-brand-400 hover:bg-brand-300 rounded-xl transition-all duration-200 text-center shadow-lg shadow-brand-500/10">
+                            Explore Projects
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-slate-300 border border-slate-800 hover:bg-slate-900 rounded-xl transition-all duration-200 text-center">
+                            Get In Touch
+                        </a>
+                    </div>
+
+                    <!-- Quick stats / tech badges -->
+                    <div class="pt-8 border-t border-slate-900 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white">8+</div>
+                            <div class="text-xs sm:text-sm text-slate-500">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white">40+</div>
+                            <div class="text-xs sm:text-sm text-slate-500">Projects Delivered</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white">99.9%</div>
+                            <div class="text-xs sm:text-sm text-slate-500">Uptime Driven</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Interactive Terminal -->
+                <div class="lg:col-span-5 relative w-full max-w-lg mx-auto lg:max-w-none">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-500/10 to-indigo-500/10 rounded-2xl blur-xl -z-10"></div>
+                    <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden font-mono text-xs sm:text-sm leading-relaxed">
+                        <!-- Top Bar -->
+                        <div class="flex items-center justify-between px-4 py-3 bg-slate-950 border-b border-slate-800">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500/70"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/70"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/70"></div>
+                            </div>
+                            <div class="text-slate-500 text-xs select-none">alex_developer.py</div>
+                            <div class="w-12"></div> <!-- spacer -->
+                        </div>
+                        <!-- Terminal Content -->
+                        <div class="p-6 space-y-4 text-slate-300">
+                            <div>
+                                <span class="text-slate-500">&gt;&gt;&gt;</span> <span class="text-purple-400">import</span> developer
+                            </div>
+                            <div>
+                                <span class="text-slate-500">&gt;&gt;&gt;</span> alex = developer.Engineer()
+                            </div>
+                            <div>
+                                <span class="text-slate-500">&gt;&gt;&gt;</span> alex.get_skills()
+                            </div>
+                            <div class="text-emerald-400 bg-emerald-950/20 px-3 py-1.5 rounded border border-emerald-900/30">
+                                ['Go', 'Rust', 'TypeScript', 'Kubernetes', 'React', 'AWS']
+                            </div>
+                            <div>
+                                <span class="text-slate-500">&gt;&gt;&gt;</span> alex.current_focus()
+                            </div>
+                            <div class="text-brand-400">
+                                "Designing microservices for AI inference & high-throughput streaming pipelines."
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-500">&gt;&gt;&gt;</span>
+                                <span class="ml-2 w-2 h-4 bg-slate-400 animate-ping"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-slate-900/40 border-y border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Visual -->
+                <div class="lg:col-span-5 relative group">
+                    <div class="absolute inset-0 bg-brand-400/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-60"></div>
+                    <div class="relative bg-slate-950 border border-slate-800 rounded-2xl p-4 overflow-hidden">
+                        <!-- Simulated system monitor visual -->
+                        <div class="flex justify-between items-center mb-4 text-xs text-slate-500">
+                            <span>SYSTEM RECOGNITION STATUS</span>
+                            <span class="text-emerald-400 font-bold">ONLINE</span>
+                        </div>
+                        <div class="aspect-square w-full bg-slate-900/80 rounded-lg flex flex-col items-center justify-center p-6 border border-slate-800 relative overflow-hidden">
+                            <i data-lucide="cpu" class="w-16 h-16 text-brand-400 mb-4 animate-pulse"></i>
+                            <div class="text-center space-y-1">
+                                <h4 class="font-bold text-white font-mono">Alex Rivera</h4>
+                                <p class="text-xs text-slate-400">Full-Stack Architect</p>
+                            </div>
+                            <!-- Simulated Grid Matrix -->
+                            <div class="absolute inset-0 grid grid-cols-6 grid-rows-6 opacity-10 pointer-events-none">
+                                <template x-for="i in 36">
+                                    <div class="border border-slate-600"></div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Content -->
+                <div class="lg:col-span-7 space-y-6">
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                        My Core Engineering Philosophy
+                    </h2>
+                    <p class="text-slate-400 leading-relaxed">
+                        I believe in writing clean, self-documenting code and designing robust architectures that can scale seamlessly with minimal overhead. Every line of code should have a purpose, every component a defined responsibility.
+                    </p>
+                    <p class="text-slate-400 leading-relaxed">
+                        Whether configuring multi-region Kubernetes clusters, optimizing PostgreSQL query plans, or polishing a React application for ultimate core web vitals performance, I focus on delivering speed, resilience, and accessibility.
+                    </p>
+
+                    <!-- Features/Highlights Bullet points -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1.5 bg-brand-500/10 rounded-lg text-brand-400">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">Speed & Efficiency</h4>
+                                <p class="text-xs text-slate-400">Building light, fast, and optimized architectures.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1.5 bg-indigo-500/10 rounded-lg text-indigo-400">
+                                <i data-lucide="shield" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">Secure by Design</h4>
+                                <p class="text-xs text-slate-400">Adhering to security best practices from day zero.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+                                <i data-lucide="git-branch" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">Robust CI/CD</h4>
+                                <p class="text-xs text-slate-400">Automated testing & deployments with zero-downtime.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1.5 bg-purple-500/10 rounded-lg text-purple-400">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">Collaborative Spirit</h4>
+                                <p class="text-xs text-slate-400">Strong communication and experienced technical leadership.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Core Capabilities</h2>
+                <p class="text-slate-400">My technical toolkit is optimized for high performance, reliability, and robust engineering standards across the stack.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Frontend -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/40 transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="p-2.5 bg-brand-500/10 rounded-xl text-brand-400">
+                            <i data-lucide="layout" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Frontend Architecture</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">React & Next.js</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">TypeScript</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Tailwind CSS & Radix UI</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">GraphQL / REST Clients</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backend -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="p-2.5 bg-indigo-500/10 rounded-xl text-indigo-400">
+                            <i data-lucide="server" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Backend Engineering</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Go (Golang)</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Node.js / NestJS</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Python (FastAPI, Django)</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">PostgreSQL / MongoDB</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- DevOps -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="p-2.5 bg-purple-500/10 rounded-xl text-purple-400">
+                            <i data-lucide="cloud" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Cloud & Infrastructure</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Docker & Kubernetes</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">AWS (EKS, Lambda, S3)</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">Terraform (IaC)</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Advanced</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-slate-300">CI/CD (GitHub Actions, GitLab)</span>
+                            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Expert</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section (with Filter) -->
+    <section id="projects" class="py-20 bg-slate-900/30 border-y border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div class="space-y-4">
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans">Featured Work</h2>
+                    <p class="text-slate-400 max-w-xl">A curated selection of software architectures, infrastructure layouts, and frontends built by yours truly.</p>
+                </div>
+                
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap gap-2">
+                    <button @click="activeTab = 'all'" :class="activeTab === 'all' ? 'bg-brand-500 text-slate-950 font-semibold' : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'" class="px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                        All Projects
+                    </button>
+                    <button @click="activeTab = 'backend'" :class="activeTab === 'backend' ? 'bg-brand-500 text-slate-950 font-semibold' : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'" class="px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                        Backend & Cloud
+                    </button>
+                    <button @click="activeTab = 'frontend'" :class="activeTab === 'frontend' ? 'bg-brand-500 text-slate-950 font-semibold' : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'" class="px-4 py-2 rounded-lg text-sm transition-all duration-200">
+                        Full-Stack / Frontend
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 (Backend/Cloud) -->
+                <div x-show="activeTab === 'all' || activeTab === 'backend'" class="group bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between" style="display: flex;">
+                    <div>
+                        <!-- Project preview mock/graphic -->
+                        <div class="h-48 bg-slate-900 p-6 flex flex-col justify-between relative border-b border-slate-800/50">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2 bg-indigo-500/10 rounded-lg text-indigo-400">
+                                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                                </span>
+                                <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-900/30 px-2 py-1 rounded">Live Production</span>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white">EventCascade</h4>
+                                <p class="text-xs text-slate-500">Real-time event streaming pipeline</p>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                High-throughput event streaming architecture designed with Go, Apache Kafka, and gRPC. Sustains 500k+ event processing operations per second with sub-millisecond lag.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Golang</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Kafka</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Kubernetes</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">gRPC</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex justify-between items-center mt-auto border-t border-slate-900/30">
+                        <a href="#" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-semibold">
+                            <i data-lucide="github" class="w-4 h-4"></i> Repository
+                        </a>
+                        <a href="#" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-semibold">
+                            View Docs <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 (Full-stack/Frontend) -->
+                <div x-show="activeTab === 'all' || activeTab === 'frontend'" class="group bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between" style="display: flex;">
+                    <div>
+                        <div class="h-48 bg-slate-900 p-6 flex flex-col justify-between relative border-b border-slate-800/50">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2 bg-brand-500/10 rounded-lg text-brand-400">
+                                    <i data-lucide="layout" class="w-6 h-6"></i>
+                                </span>
+                                <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-900/30 px-2 py-1 rounded">Active</span>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white">DevFlow Workspace</h4>
+                                <p class="text-xs text-slate-500">Collaborative Markdown IDE</p>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                A web-based integrated development space utilizing Next.js, WebRTC, and Editor.js. Allows team real-time document synchronization and interactive block-style canvas formatting.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Next.js</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Tailwind CSS</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">WebRTC</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Yjs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex justify-between items-center mt-auto border-t border-slate-900/30">
+                        <a href="#" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-semibold">
+                            <i data-lucide="github" class="w-4 h-4"></i> Repository
+                        </a>
+                        <a href="#" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-semibold">
+                            Live Demo <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 (Backend/Cloud) -->
+                <div x-show="activeTab === 'all' || activeTab === 'backend'" class="group bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between" style="display: flex;">
+                    <div>
+                        <div class="h-48 bg-slate-900 p-6 flex flex-col justify-between relative border-b border-slate-800/50">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2 bg-purple-500/10 rounded-lg text-purple-400">
+                                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                                </span>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-800 border border-slate-700 px-2 py-1 rounded">V1.0 Released</span>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white">CloudPulse Agent</h4>
+                                <p class="text-xs text-slate-500">Resource monitoring server CLI</p>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                A lightweight Linux systems monitoring daemon compiled in Rust. Hooks directly into system APIs and pushes disk, RAM, and processor analytics to custom endpoints with minimal overhead.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Rust</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Linux API</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Tokio Async</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex justify-between items-center mt-auto border-t border-slate-900/30">
+                        <a href="#" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-semibold">
+                            <i data-lucide="github" class="w-4 h-4"></i> Repository
+                        </a>
+                        <a href="#" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-semibold">
+                            Get Binary <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 4 (Full-stack/Frontend) -->
+                <div x-show="activeTab === 'all' || activeTab === 'frontend'" class="group bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between" style="display: flex;">
+                    <div>
+                        <div class="h-48 bg-slate-900 p-6 flex flex-col justify-between relative border-b border-slate-800/50">
+                            <div class="flex justify-between items-start">
+                                <span class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">
+                                    <i data-lucide="database" class="w-6 h-6"></i>
+                                </span>
+                                <span class="text-xs font-mono text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-2 py-1 rounded">SaaS</span>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-white">GraphQL Canvas</h4>
+                                <p class="text-xs text-slate-500">Dynamic database schema visualizer</p>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                Intuitively diagram database structures, generate seamless SQL and GraphQL schema definitions instantly, and output clean code configurations.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">React</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">NodeJS</span>
+                                <span class="text-xs font-mono bg-slate-900 text-slate-400 px-2 py-1 rounded">Canvas API</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex justify-between items-center mt-auto border-t border-slate-900/30">
+                        <a href="#" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-semibold">
+                            <i data-lucide="github" class="w-4 h-4"></i> Repository
+                        </a>
+                        <a href="#" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-semibold">
+                            Open App <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Timeline / Experience -->
+    <section id="experience" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Professional Journey</h2>
+                <p class="text-slate-400">A timeline of my professional accomplishments, design impacts, and engineering environments.</p>
+            </div>
+
+            <div class="relative max-w-3xl mx-auto">
+                <!-- Vertical line -->
+                <div class="absolute left-4 sm:left-1/2 top-0 bottom-0 w-0.5 bg-slate-800 -translate-x-1/2"></div>
+
+                <!-- Experience Item 1 -->
+                <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 group">
+                    <div class="absolute left-4 sm:left-1/2 w-4 h-4 rounded-full bg-brand-400 border-4 border-slate-950 -translate-x-1/2 z-10 transition-all duration-300 group-hover:scale-125 group-hover:bg-brand-300"></div>
+                    
+                    <!-- Left side spacer/content block -->
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0 sm:text-right">
+                        <span class="text-xs font-mono text-brand-400 font-semibold block mb-1">2021 — Present</span>
+                        <h4 class="text-lg font-bold text-white">Lead Full-Stack Engineer</h4>
+                        <p class="text-sm text-slate-400 mb-2">OmniTech Solutions</p>
+                    </div>
+                    
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0">
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Spearheaded migrations of core enterprise architectures from monolithic PHP layouts into scalable modern React & AWS environments. Optimized server capacities, dropping processing operational overhead by 40%.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Experience Item 2 -->
+                <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 group">
+                    <div class="absolute left-4 sm:left-1/2 w-4 h-4 rounded-full bg-indigo-400 border-4 border-slate-950 -translate-x-1/2 z-10 transition-all duration-300 group-hover:scale-125 group-hover:bg-indigo-300"></div>
+                    
+                    <!-- Right side/Left alignment dynamic -->
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0 sm:order-2">
+                        <span class="text-xs font-mono text-indigo-400 font-semibold block mb-1">2018 — 2021</span>
+                        <h4 class="text-lg font-bold text-white">Senior Backend Engineer</h4>
+                        <p class="text-sm text-slate-400 mb-2">Vortex Data Labs</p>
+                    </div>
+                    
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0 sm:text-right sm:order-1">
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Developed high-capacity real-time analytical tools parsing gigabytes of server telemetry. Mentored and structured standard backend architectural operations within Go pipelines across 3 remote units.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Experience Item 3 -->
+                <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between group">
+                    <div class="absolute left-4 sm:left-1/2 w-4 h-4 rounded-full bg-purple-400 border-4 border-slate-950 -translate-x-1/2 z-10 transition-all duration-300 group-hover:scale-125 group-hover:bg-purple-300"></div>
+                    
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0">
+                        <span class="text-xs font-mono text-purple-400 font-semibold block mb-1">2016 — 2018</span>
+                        <h4 class="text-lg font-bold text-white">Software Engineer</h4>
+                        <p class="text-sm text-slate-400 mb-2">WebGenesis Dev Studio</p>
+                    </div>
+                    
+                    <div class="w-full sm:w-[45%] pl-12 sm:pl-0">
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Executed the development and responsive design patterns of various e-commerce, content-focused web systems, and dashboard client panels utilizing pure CSS architectures.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials / Recommendations -->
+    <section class="py-20 bg-slate-900/40 border-y border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Kind Words</h2>
+                <p class="text-slate-400">Feedback from technical colleagues and engineering clients I have partnered with.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-slate-950 border border-slate-800 p-8 rounded-2xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed">
+                            "Alex joined our squad and immediately optimized our distributed indexing pipeline. His knowledge of system orchestration and Golang saved us weeks of engineering cycle time."
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 mt-6 pt-6 border-t border-slate-900">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-white text-sm">
+                            HM
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Helena Matthews</h4>
+                            <p class="text-xs text-slate-500">VP of Engineering, OmniTech</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-slate-950 border border-slate-800 p-8 rounded-2xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed">
+                            "An incredibly reliable designer and engineer. The React tools Alex delivered felt beautifully clean, had flawless accessibility scoring, and executed seamlessly. A real team asset."
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 mt-6 pt-6 border-t border-slate-900">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-white text-sm">
+                            DC
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">David Chen</h4>
+                            <p class="text-xs text-slate-500">Co-Founder, SparkMedia</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-slate-950 border border-slate-800 p-8 rounded-2xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed">
+                            "From Terraform setups to clean UI interfaces, Alex balances high performance logic with seamless creative structures. Highly recommended for full lifecycle engineering projects."
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 mt-6 pt-6 border-t border-slate-900">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-white text-sm">
+                            TR
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Thomas Reyes</h4>
+                            <p class="text-xs text-slate-500">Engineering Manager, Vortex Data Labs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Form Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Contact info left -->
+                <div class="lg:col-span-5 space-y-6">
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Let's Connect</h2>
+                    <p class="text-slate-400 max-w-md">
+                        Have a complex system architecture that needs optimization, or need an experienced hand to deliver high-quality full-stack applications? Drop a message!
+                    </p>
+                    
+                    <div class="space-y-4 pt-6">
+                        <div class="flex items-center space-x-3 text-slate-300">
+                            <i data-lucide="mail" class="w-5 h-5 text-brand-400"></i>
+                            <span class="text-sm font-mono">alex.rivera@dev.io</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-300">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-brand-400"></i>
+                            <span class="text-sm">San Francisco, CA (Open to Remote)</span>
+                        </div>
+                    </div>
+
+                    <!-- Social accounts -->
+                    <div class="flex space-x-4 pt-6">
+                        <a href="#" class="p-2.5 bg-slate-900 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="p-2.5 bg-slate-900 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="p-2.5 bg-slate-900 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact form right with submission logic simulation -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 p-8 rounded-2xl relative">
+                    <!-- Form Submission success panel -->
+                    <div x-show="formSubmitted" 
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         class="absolute inset-0 bg-slate-900/95 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center p-8 text-center space-y-4 z-20"
+                         style="display: none;">
+                        <div class="p-4 bg-emerald-500/10 text-emerald-400 rounded-full">
+                            <i data-lucide="check-circle" class="w-12 h-12"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Message Dispatched</h3>
+                        <p class="text-sm text-slate-400 max-w-sm">Thanks for reaching out! Your message has been integrated into my priority response pipeline.</p>
+                        <button @click="formSubmitted = false" class="px-5 py-2 text-sm bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                            Send another message
+                        </button>
+                    </div>
+
+                    <form @submit.prevent="formSubmitted = true" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="name" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Your Name</label>
+                                <input type="text" id="name" required class="w-full bg-slate-950 border border-slate-800 focus:border-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="email" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email Address</label>
+                                <input type="email" id="email" required class="w-full bg-slate-950 border border-slate-800 focus:border-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="subject" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Subject</label>
+                            <input type="text" id="subject" required class="w-full bg-slate-950 border border-slate-800 focus:border-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-colors">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="message" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Message</label>
+                            <textarea id="message" rows="4" required class="w-full bg-slate-950 border border-slate-800 focus:border-brand-500 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 text-center text-slate-950 font-bold bg-brand-400 hover:bg-brand-300 rounded-xl transition-all duration-200 shadow-lg shadow-brand-500/10 hover:shadow-brand-500/20">
+                            Transmit Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-2 text-lg font-bold tracking-tight">
+                <span class="text-brand-400 font-mono">&lt;</span>
+                <span>AlexRivera</span>
+                <span class="text-brand-400 font-mono">/&gt;</span>
+            </div>
+            
+            <p class="text-xs text-slate-500">
+                &copy; <span x-text="new Date().getFullYear()"></span> Alex Rivera. Built with Tailwind CSS & Alpine.js.
+            </p>
+            
+            <!-- Quick footer links -->
+            <div class="flex space-x-6 text-xs text-slate-500">
+                <a href="#about" class="hover:text-white transition-colors">About</a>
+                <a href="#skills" class="hover:text-white transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
