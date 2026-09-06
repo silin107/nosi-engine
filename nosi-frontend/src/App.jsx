@@ -44,6 +44,7 @@ export default function App() {
     } finally {
       setLoading(false);
     }
+
   };
 
   const handleUndo = async () => {
