@@ -8,7 +8,7 @@ export default function ChatMessages({ messages, loading }) {
         <div className="text-center text-slate-500 mt-12 text-sm leading-relaxed">
           <Sparkles className="w-8 h-8 text-indigo-500 mx-auto mb-3 animate-pulse" />
           مرحباً بك في <strong className="text-slate-300">NOSI Studio</strong>.<br />
-          ابدأ بكتابة فكرتك لبناء وتطوير موقعك الإلكتر��ني فوراً.
+          ابدأ بكتابة فكرتك لبناء وتطوير موقعك الإلكتروني فوراً.
         </div>
       )}
       {messages.map((msg, i) => (
@@ -18,8 +18,7 @@ export default function ChatMessages({ messages, loading }) {
               msg.role === 'user'
                 ? 'bg-indigo-600 text-white rounded-br-none'
                 : 'bg-slate-800 text-slate-200 border border-slate-700/50 rounded-bl-none'
-            }`}
-          >
+            }`}>
             {msg.content}
           </div>
         </div>
