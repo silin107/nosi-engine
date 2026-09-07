@@ -1,9 +1,19 @@
+// orchestrator.js
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generateWithOpenRouter } from './openrouterService.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+// load CommonJS modules (contextManager, validator, promptBuilder)
+const ctx = require('./contextManager.js'); // exports: getProject, saveProject, appendMessage, ...
+const { validateAiResponse } = require('./validator.js');
+const { buildSystemPrompt, buildUserPrompt } = require('./promptBuilder.js');
+
+const { getProject, saveProject, appendMessage } = ctx;
 
 const geminiClient = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const GEMINI_MODEL = "gemini-1.5-pro"; // تمت الإضافة لتجنب خطأ غير معرّف
-const MAX_RETRIES = 3; // تمت الإضافة لتجنب خطأ غير معرّف
+const GEMINI_MODEL = "gemini-1.5-pro";
+const MAX_RETRIES = 3;
 
 export const handleAIRequest = async (taskType, prompt, systemInstruction) => {
   switch (taskType) {
@@ -23,14 +33,13 @@ async function callGemini(systemPrompt, userPrompt) {
     throw new Error("GEMINI_API_KEY environment variable is not set");
   }
 
-  // combine the prompts similarly to prior usage
-  const combinedPrompt = ${systemPrompt}\n\n${userPrompt};
+  // combine the prompts correctly using template literal
+  const combinedPrompt = `${systemPrompt}\n\n${userPrompt}`;
 
   // get the model and generate content
   const model = geminiClient.getGenerativeModel({ model: GEMINI_MODEL });
   const result = await model.generateContent({
     text: combinedPrompt,
-    // keep tokens conservative; adjust as needed in production
     max_output_tokens: 4000,
     temperature: 0.0,
   });
@@ -48,7 +57,7 @@ async function callGemini(systemPrompt, userPrompt) {
   }
   // If the SDK returned structured output, try to join text pieces
   if (Array.isArray(response.output)) {
-    return response.output.map((o) => o.content  o.text  "").join("\n").trim();
+    return (response.output || []).map((o) => o.content || o.text || "").join("\n").trim();
   }
 
   // Last resort: stringify the response object
@@ -89,7 +98,7 @@ function applyActionToTree(siteTree, parsed) {
     case "add_page":
       siteTree.pages.push({
         id: parsed.section.id,
-        path: parsed.section.props?.path || /${parsed.section.id},
+        path: parsed.section.props?.path || `/${parsed.section.id}`,
         title: parsed.section.props?.title || parsed.section.id,
         sections: [],
       });
@@ -110,12 +119,12 @@ export async function handleUserMessage(projectId, userMessage) {
 
   const systemPrompt = buildSystemPrompt();
   let lastErrors = [];
-for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     const userPrompt = buildUserPrompt({
       userMessage:
         attempt === 0
           ? userMessage
-          : ${userMessage}\n\n(تصحيح مطلوب، الأخطاء السابقة: ${lastErrors.join("; ")}),
+          : `${userMessage}\n\n(تصحيح مطلوب، الأخطاء السابقة: ${lastErrors.join("; ")})`,
       siteTree: project.siteTree,
       recentConversation: project.conversation.slice(-6),
     });

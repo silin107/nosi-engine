@@ -18,7 +18,8 @@ export default function ChatMessages({ messages, loading }) {
               msg.role === 'user'
                 ? 'bg-indigo-600 text-white rounded-br-none'
                 : 'bg-slate-800 text-slate-200 border border-slate-700/50 rounded-bl-none'
-            }`}>
+            }`}
+          >
             {msg.content}
           </div>
         </div>
