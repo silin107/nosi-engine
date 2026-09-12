@@ -104,7 +104,7 @@ export default function App() {
         <ChatMessages messages={messages} loading={loading} />
 
         <div className="p-4 border-t border-slate-800 bg-slate-900">
-          <ChatInput onSend={handleSendMessage} disabled={loading} />
+          <ChatInput onSendMessage={handleSendMessage} disabled={loading} />
         </div>
       </div>
 
